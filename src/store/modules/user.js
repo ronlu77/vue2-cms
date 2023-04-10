@@ -1,5 +1,5 @@
 import { login, logout, getUserInfo } from '@/api/user'
-import { getToken, setToken, removeToken} from '@/utils/auth'
+import { getToken, setToken, removeToken } from '@/utils/auth'
 
 const state = {
     token: getToken(),
@@ -24,7 +24,7 @@ const mutations = {
 }
 
 const actions = {
-    login({ commit }, userInfo) {
+    Login({ commit }, userInfo) {
         const { username, password } = userInfo
 
         return new Promise((resolve, reject) => {
@@ -36,21 +36,28 @@ const actions = {
             }).catch(error => reject(error))
         })
     },
-    getInfo({ commit, state }) {
+    // 获取信息存储进vuex中
+    GetInfo({ commit, state }) {
         return new Promise((resolve, reject) => {
             getUserInfo(state.token).then(response => {
-                const { data } = response
-                commit('SET_USERNAME', data.name)
-                commit('SET_AVATOR', data.avator || '')
-                resolve()
-            }).catch(error => reject(error))
+                if (response.code === 200) {
+                    const { data } = response
+                    commit('SET_USERNAME', data.name)
+                    commit('SET_AVATOR', data.avator || '')
+                    resolve(data)
+                } else {
+                    return reject('Failed, please Login again.')
+                }
+            }).catch(error => {
+                reject(error)
+            })
         })
     },
-    logout({ commit }) {
+    Logout({ commit }) {
         return new Promise((resolve, reject) => {
             logout().then(response => {
                 const { code } = response
-                if(code === 200) {
+                if (code === 200) {
                     removeToken()
                     commit('RESETINFO')
                 }

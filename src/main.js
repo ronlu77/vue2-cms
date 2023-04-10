@@ -4,8 +4,9 @@ import App from './App.vue'
 import store from './store'
 import router from './router'
 
+// 引入全局样式
 import '@/styles/index.scss'
-
+// 引入element-ui
 import ElementUI from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
 
@@ -16,8 +17,8 @@ import '@/permission'
 import Hamburger from '@/components/Hamburger'
 import Navtop from "@/components/Navtop"
 
-Vue.component('Hamburger')
-Vue.component('Navtop')
+Vue.component('Hamburger', Hamburger)
+Vue.component('Navtop', Navtop)
 // 阻止启动生产消息
 Vue.config.productionTip = false
 

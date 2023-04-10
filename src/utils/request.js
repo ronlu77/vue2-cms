@@ -3,13 +3,13 @@ import { Message, MessageBox } from 'element-ui'
 import store from '@/store'
 import { getToken } from '@/utils/auth'
 
-// step 1: create axios instance
+// step 1: 创建 axios 实例
 const serivce = axios.create({
     baseURL: '',
     timeout: 5000
 })
 
-// step 2: setting request interceptor
+// step 2: 设置请求头
 serivce.interceptors.request.use(
     config => {
         // do something before request is sent
@@ -26,7 +26,7 @@ serivce.interceptors.request.use(
     }
 )
 
-// step 3: setting response interceptor
+// step 3: 设置响应头
 serivce.interceptors.response.use(
     response => {
         const res = response.data
@@ -61,4 +61,5 @@ serivce.interceptors.response.use(
     }
 )
 
+// step 4： 暴露 axios 实例
 export default serivce

@@ -12,7 +12,7 @@ module.exports = defineConfig({
     port: 8080,
     proxy: {
       '/api': {
-        target: 'https://www.fastmock.site/mock/df0c73b1403ffe4d124009df8d63dc29/vue-cms',
+        target: 'http://127.0.0.1:4523/m1/2542920-0-default',
         ws: true,
         changOrigin: true,
         pathRewrite: {
