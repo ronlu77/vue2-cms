@@ -8,15 +8,24 @@ import Layout from '@/layout'
 /**
  * 
  * 
- * hidden: true    if set true, item will not show in the sidebar
+ * hidden: true    // 控制侧边菜单的显示隐藏
+ * meta {          // 元数据
+ *   role          // 控制访问权限
+ * 
+ * }
  * 
  */
 
-// a base router page, all roles can be accessed
+/** 所有用户都可访问的路由集合 */
 export const constantRoutes = [
     {
         path: '/login',
         component: () => import('@/views/login'),
+        hidden: true
+    },
+    {
+        path: '/404',
+        component: () => import('@/views/error/404'),
         hidden: true
     },
     {
@@ -35,46 +44,54 @@ export const constantRoutes = [
         ]
     },
     {
-        path: '/tablenav',
-        name: 'demo',
+        path: '/nest',
         component: Layout,
-        meta: { title: 'classification', icon: '' },
+        hidden: false,
+        redirect: '/nest/demo',
+        meta: { title: '多级菜单' },
         children: [
             {
-                path: '/tablenav-list',
-                name: 'TableNavList',
-                component: () => import('@/views/demo/demo1'),
-                meta: { title: '表格', icon: '' },
+                path: 'demo',
+                name: '一级菜单',
+                component: () => import('@/views/demo'),
+                meta: { title: '一级菜单', icon: '' },
                 children: [
                     {
-                        path: '/demo1/demo1-1',
-                        name: 'demo1-1',
+                        path: 'demo1',
+                        name: '二级菜单1',
+                        hidden: true,
                         component: () => import('@/views/demo/demo1/demo1-1'),
-                        meta: { title: 'demo1-1' }
+                        meta: { title: '二级菜单1' }
                     },
                     {
-                        path: '/demo1/demo1-2',
-                        name: 'demo1-2',
+                        path: 'demo2',
+                        name: '二级菜单2',
+                        hidden: true,
                         component: () => import('@/views/demo/demo1/demo1-2'),
-                        meta: { title: 'demo1-2' }
+                        meta: { title: '二级菜单2' }
                     }
                 ]
             },
-            {
-                path: '/demo2',
-                name: 'damo2',
-                component: () => import('@/views/demo/demo2'),
-                meta: { title: 'demo2' }
-            }
         ]
     },
+    // {
+    //     path: '/permission',
+    //     name: '权限配置',
+    //     component: () => import('@/views/demo/demo2'),
+    //     meta: { title: '权限配置', role: ['admin'] }
+    // }
 ]
 
 // 异步挂载路由
 export const asyncRouterMap = [
     {
-        
+        path: '/dynamic',
+        component: Layout,
+        name: '动态路由',
+        meta: { role: ['admin'] },
+        children: []
     },
+    // tip: 必须放在最后, 不然所有的页面都会被拦截到404，https://github.com/vuejs/vue-router/issues/1176
     {
         path: '*',
         redirect: '/404',

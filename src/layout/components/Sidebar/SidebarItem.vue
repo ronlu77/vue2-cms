@@ -1,83 +1,97 @@
 <template>
-  <div v-if="!item.hidden">
-    <!-- 目录下只有一个菜单的情况下只显示菜单，不展示目录 -->
-    <template v-if="hasOnlyChildren(item.children, item) && (!onlyChildren.children || onlyChildren.noShowingChildren) && !item.awalysShow">
-        <!-- app-link 实现对外部连接跳转的支持 -->
-        <app-link v-if="onlyChildren.meta" :to="onlyChildren.path">
-            <el-menu-item :index="onlyChildren.path">
-                <menu-item :meta="onlyChildren.meta"></menu-item>
-            </el-menu-item>
-        </app-link>
-    </template>
-    <!-- 目录下有多个菜单，同时展示目录和菜单 -->
-    <div v-else>
-        <el-submenu ref="subMenu" :index="item.path">
-            <template #title>
-                <menu-item v-if="item.meta" :meta="item.meta"></menu-item>
-            </template>
+    <div v-if="!item.hidden">
+        <!-- 目录下只有一个菜单的情况下只显示菜单，不展示目录 -->
+        <template
+            v-if="hasOnlyChildren(item.children, item) && (!onlyChildren.children || onlyChildren.noShowingChildren) && !item.awalysShow">
+            <!-- app-link 实现对外部连接跳转的支持 -->
+            <app-link v-if="onlyChildren.meta" :to="resolvePath(onlyChildren.path, onlyChildren.query)">
+                <el-menu-item :index="onlyChildren.path">
+                    <i>icon</i>
+                    <Item :meta="onlyChildren.meta"></Item>
+                </el-menu-item>
+            </app-link>
+        </template>
+        <!-- 目录下有多个菜单，同时展示目录和菜单 -->
+        <div v-else>
+            <!-- 菜单项 -->
+            <el-submenu ref="subMenu" :index="item.path">
+                <template v-if="item.meta" #title>
+                    <i>icon</i>
+                    <span v-if="collapse">{{ item.meta.title }}</span>
+                </template>
 
-            <sidebar-item
-                v-for="children in item.children"
-                :key="children.path"
-                :item="children"
-                :base-path="resolvePath(children.path)">
-            </sidebar-item>
-        </el-submenu>
+                <!-- 嵌套使用组件, 嵌套路由调用resolvePath方法进行路由拼接后再传入basePath -->
+                <sidebar-item v-for="child in item.children" :key="child.path" :item="child"
+                    :base-path="resolvePath(child.path)">
+                </sidebar-item>
+            </el-submenu>
+        </div>
     </div>
-  </div>
 </template>
 
 <script>
 import AppLink from './Link'
-import MenuItem from './Item'
+import Item from './Item'
 import { isExternal } from '@/utils/validate'
 
 export default {
     name: 'SidebarItem',
     props: {
-        item: {type: Object, required: true},
-        basePath: {type: String, default: ''},
-        collpase: {type: Boolean, default: true},
+        item: { type: Object, required: true },     // route 对象
+        basePath: { type: String, default: '' },    // 基础路径，如果是嵌套路由则为上级路由路径
+        collapse: { type: Boolean, required: true }
     },
-    components: { AppLink, MenuItem },
+    components: { AppLink, Item },
     data() {
         return {
             onlyChildren: null
         }
     },
     methods: {
-        // 判断是否存在一个hidden 属性为false 的子项路由
-        hasOnlyChildren(childrenRoute = [], parentRoute) {
-            // 获取子项路由中显示的路由集合
-            const showRoutesList = childrenRoute.filter(item => {
-                if(item.hidden) {
+        // 判断是否存在一个hidden 属性为false 的子项路由 ,bug 路由下存在两个子项路由，如果其中
+        /**
+         * @param {Array} childrenRoutes
+         * @param {Object} parentRoute
+         */
+        hasOnlyChildren(childrenRoutes = [], parentRoute) {
+            // 获取子项路由中需要显示的路由集合
+            const showRoutesList = childrenRoutes.filter(item => {
+                if (item.hidden) {
                     return false
-                }else {
-                    // 如果子路由不被隐藏，且最终显示路由集合长度为1 则该存储路由为 onlychildren 路由
+                } else {
+                    // 如果子路由 hidden: false，且最终显示路由集合长度为1 则该存储路由为 onlychildren 路由
                     this.onlyChildren = item
                     return true
                 }
             })
-            if(showRoutesList.length === 1){
+            if (showRoutesList.length === 1) {
                 return true
             }
-            // 说明当前路由无开启 hidden: false 的路由
-            if(showRoutesList.length === 0) {
+            // 当前路由子项没有要显示的则展示父级菜单
+            if (showRoutesList.length === 0) {
                 this.onlyChildren = { ...parentRoute, path: '', noShowingChildren: true }
                 return true
             }
             return false
         },
-        resolvePath(pathParam) {
-            if(isExternal(pathParam)) {
-                return pathParam
+        /**
+         * @description 处理路由路径, basePath 是路由上级路径, 需要拼接才能获取完整的路由路径，提供给router-link 使用
+         * @param {*} routePath 当前路由路径
+         * @param {*} routeQuery 当前路由携带参数
+         */
+        resolvePath(routePath, routeQuery) {
+            // 对应路由指向外部链接
+            if (isExternal(routePath)) {
+                return routePath
             }
-            if(isExternal(this.basePath)) {
+            if (isExternal(this.basePath)) {
                 return this.basePath
             }
-
-            return this.basePath + this.basePath
-        }
+            if (routeQuery) {
+                return { path: this.basePath, query: routeQuery }
+            }
+            return this.basePath.endsWith('/') ? '' + routePath : this.basePath + '/' + routePath
+        },
     }
 }
 </script>

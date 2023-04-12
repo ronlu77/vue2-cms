@@ -14,7 +14,14 @@
         background-color="#0d569f"
         text-color="#fff"
       >
-        <sidebar-item v-for="item in routes" :key="item.path" :item="item" :base-path="item.path" :collpase="isCollpase"/>
+        <!-- 处理多级路由的情况 -->
+        <sidebar-item
+          v-for="(route, index) in routes" 
+          :key="route.path + index" 
+          :item="route" 
+          :base-path="route.path"
+          :collapse="!isCollpase"
+        />
       </el-menu>
     </el-scrollbar>
   </div>
@@ -23,6 +30,7 @@
 <script>
 import Logo from './Logo'
 import SidebarItem from './SidebarItem'
+
 export default {
     name: 'Sidebar',
     components: {
@@ -49,18 +57,12 @@ export default {
       },
       activeMenu() {
         const route = this.$route
-        const { meta , path } = route
-        // 路由源数据中设置了 activeMenu 则会高光
-        if(meta.activeMenu) {
-          return meta.activeMenu
-        }
-        console.log('this.path', path);
-        return path
+        let { meta, path } = route
+        path = path.endsWith('/') ? path.slice(0,path.length -1) : path
+        console.log('current PATH', typeof path);
+        return meta.activeMenu ? meta.activeMenu : path
       }
     },
-    mounted() {
-      console.log('mounted', this.$route);
-    }
 }
 </script>
 
@@ -72,7 +74,7 @@ export default {
 
 .has-logo {
   .scrollbar-wrapper {
-     /* has logo content height 50px */
+     /* logo content height 50px */
     height: calc(100% - 50px) !important;
     overflow-x: hidden !important;
   }
