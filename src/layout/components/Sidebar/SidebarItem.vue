@@ -8,7 +8,7 @@
         !item.awalysShow
       "
     >
-      <!-- app-link 实现对外部连接跳转的支持 -->
+      <!-- app-link组件实现对外部链接跳转的支持 -->
       <app-link
         v-if="onlyChildren.meta"
         :to="resolvePath(onlyChildren.path, onlyChildren.query)"
