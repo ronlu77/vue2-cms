@@ -110,6 +110,17 @@ export const constantRoutes = [
             },
         ]
     },
+    {
+        path: 'external-link',
+        component: Layout,
+        hidden: false,
+        children: [
+            {
+                path: "https://www.bilibili.com/",
+                meta: { title: "bilibili", icon: "" }
+            }
+        ]
+    },
 
     // tip: 必须放在最后加载, 不然动态添加的所有的页面都会被拦截到404，https://github.com/vuejs/vue-router/issues/1176
     {
