@@ -27,6 +27,7 @@ export default {
     };
   },
   watch: {
+    // 监听路由，如果是切换了菜单则重新获取面包屑
     $route(route) {
       if (route.path.startsWith("/redirect/")) {
         return;
@@ -70,7 +71,7 @@ export default {
         this.$router.push(redirect);
         return;
       }
-      this.$router.push(this.path);
+      this.$router.push(path);
     },
   },
 };
