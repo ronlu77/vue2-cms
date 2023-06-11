@@ -69,7 +69,7 @@ export const constantRoutes = [
         hidden: false,
         children: [
             {
-                path: 'setting',
+                path: '/setting',
                 name: 'Permission',
                 component: () => import('@/views/permission'),
                 meta: {
@@ -83,12 +83,12 @@ export const constantRoutes = [
         path: '/nested',
         component: Layout,
         hidden: false,
-        redirect: '/nested/demo',
+        redirect: 'noRedirect',
         meta: { title: '多级菜单' },
         children: [
             {
                 path: 'demo',
-                name: 'OneMenu',
+                name: 'NestedMenu',
                 component: ParentView,
                 meta: { title: '一级菜单', icon: '' },
                 children: [
@@ -109,6 +109,21 @@ export const constantRoutes = [
                 ]
             },
         ]
+    },
+    {
+        path: '/file',
+        component: Layout,
+        redirect: '/file/upload',
+        hidden: false,
+        children: [
+            {
+                path: 'upload',
+                name: 'FileUpload',
+                component: () => import('@/views/file'),
+                meta: { title: '文件管理', icon: '' }
+            }
+        ]
+
     },
     {
         path: 'external-link',
