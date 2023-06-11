@@ -1,6 +1,6 @@
 <template>
   <div :class="{ 'has-logo': hasLogo }">
-    <logo v-if="hasLogo" />
+    <logo v-if="hasLogo" :collapse="isCollpase" />
     <el-scrollbar wrap-class="scrollbar-wrapper">
       <!-- el-menu 自身的过度效果需要关闭（collpase-transition），否则会引起过渡 bug -->
       <el-menu
@@ -58,22 +58,3 @@ export default {
   mounted() {},
 };
 </script>
-
-<style lang="scss" scoped>
-.elmenu-container {
-  width: 100%;
-  text-align: center;
-}
-
-.has-logo {
-  .scrollbar-wrapper {
-    /* logo content height 50px */
-    height: calc(100% - 50px) !important;
-    overflow-x: hidden !important;
-  }
-}
-
-.el-scrollbar {
-  height: 100% !important;
-}
-</style>
