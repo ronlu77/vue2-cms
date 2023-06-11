@@ -28,6 +28,11 @@ a {
     .hidden-sidebar {
         .sidebar-container {
             width: 50px;
+
+            // 处理侧边栏收起时，el-submenu 不隐藏文本
+            .el-submenu__title {
+                display: none;
+            }
         }
 
         .main-container {
