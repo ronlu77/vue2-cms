@@ -69,7 +69,7 @@ export const constantRoutes = [
         hidden: false,
         children: [
             {
-                path: '/setting',
+                path: 'setting',
                 name: 'Permission',
                 component: () => import('@/views/permission'),
                 meta: {
