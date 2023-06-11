@@ -35,16 +35,8 @@ a {
         }
     }
 
-    // reset element-ui style
-}
-
-.clearfix {
-    &:after {
-        visibility: hidden;
-        display: block;
-        font-size: 0;
-        content: "";
-        clear: both;
-        height: 0;
+    // https://github.com/PanJiaChen/vue-element-admin/issues/330
+    path {
+        fill: inherit !important;
     }
 }

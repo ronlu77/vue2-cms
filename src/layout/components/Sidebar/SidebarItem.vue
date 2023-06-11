@@ -14,8 +14,7 @@
         :to="resolvePath(onlyChildren.path, onlyChildren.query)"
       >
         <el-menu-item :index="resolvePath(onlyChildren.path)">
-          <i>icon</i>
-          <item :meta="onlyChildren.meta"></item>
+          <item class="menu-item" :meta="onlyChildren.meta"></item>
         </el-menu-item>
       </app-link>
     </template>
@@ -27,8 +26,7 @@
       popper-append-to-body
     >
       <template v-if="item.meta" #title>
-        <i>icon</i>
-        <span>{{ item.meta.title }}</span>
+        <item class="menu-item" :meta="item.meta"></item>
       </template>
 
       <!-- 嵌套使用组件, 嵌套路由调用resolvePath方法进行路由拼接后再传入basePath -->

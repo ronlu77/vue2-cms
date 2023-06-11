@@ -17,6 +17,26 @@
         background-color: #0d569f;
         opacity: .9;
         transition: width 300ms ease-in;
+
+        a {
+            display: inline-block;
+            width: 100%;
+            overflow: hidden;
+            text-align: left;
+        }
+
+        .svg-icon {
+            margin-right: 20px;
+        }
+
+        .sub-el-cion {
+            margin-right: 12px;
+            margin-left: -2px;
+        }
+
+        .el-submenu__title {
+            text-align: left;
+        }
     }
 
     .main-container {
@@ -61,4 +81,5 @@
     .el-scrollbar {
         height: 100% !important;
     }
+
 }
