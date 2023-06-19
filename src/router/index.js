@@ -58,7 +58,7 @@ export const constantRoutes = [
                 component: () => import('@/views/dashboard'),
                 meta: {
                     title: '首页',
-                    icon: ''
+                    icon: 'wenjianjia'
                 }
             }
         ]
@@ -74,7 +74,7 @@ export const constantRoutes = [
                 component: () => import('@/views/permission'),
                 meta: {
                     title: '权限配置',
-                    icon: ''
+                    icon: 'wenjianjia'
                 }
             }
         ]
@@ -84,7 +84,7 @@ export const constantRoutes = [
         component: Layout,
         hidden: false,
         redirect: 'noRedirect',
-        meta: { title: '多级菜单' },
+        meta: { title: '多级菜单', icon: 'wenjianjia' },
         children: [
             {
                 path: 'demo',
@@ -120,7 +120,7 @@ export const constantRoutes = [
                 path: 'upload',
                 name: 'FileUpload',
                 component: () => import('@/views/file'),
-                meta: { title: '文件管理', icon: '' }
+                meta: { title: '文件管理', icon: 'wenjianjia' }
             }
         ]
 
@@ -132,7 +132,7 @@ export const constantRoutes = [
         children: [
             {
                 path: "https://www.bilibili.com/",
-                meta: { title: "bilibili", icon: "" }
+                meta: { title: "Bilibili", icon: "wenjianjia" }
             }
         ]
     },
